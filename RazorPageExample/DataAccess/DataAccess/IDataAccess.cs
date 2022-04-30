@@ -8,6 +8,7 @@ namespace RazorPageExample.DataAccess.DataAccess
 {
     public interface ISqlDataAccess
     {
-        public DataTable GetDataTableWithoutParameters(string sqlQuery);
+        public Task<Tuple<DataTable,int>> GetDataTableWithoutParametersAsync(string sqlQuery);
+        public Task<Tuple<DataTable, int>> GetDataTableWithParametersAsync(string sqlQuery, List<(string parameterName,object value)> parameters);
     }
 }

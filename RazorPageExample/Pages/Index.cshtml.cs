@@ -24,7 +24,10 @@ namespace RazorPageExample.Pages
         public void OnGet()
         {
             var myObject = new PositionsModelBuilder(_sqlDataAccess);
-            myObject.GetAllPositionsModelBuilder();
+            //Simple Get
+            var (myViewModel, sqlTransactionResult) = myObject.GetAllPositionsModelBuilderAsync().GetAwaiter().GetResult();
+            // Get with parameter
+            var (myViewModel2, sqlTransactionResult2) = myObject.GetPositionsModelBuilderAsync(1).GetAwaiter().GetResult();
         }
     }
 }
