@@ -13,18 +13,18 @@ namespace RazorPageExample.Pages
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
-        private readonly IDataAccess _dataAccess;
+        private readonly ISqlDataAccess _sqlDataAccess;
 
-        public IndexModel(ILogger<IndexModel> logger, IDataAccess dataAccess)
+        public IndexModel(ILogger<IndexModel> logger, ISqlDataAccess sqlDataAccess)
         {
             _logger = logger;
-            _dataAccess = dataAccess; 
+            _sqlDataAccess = sqlDataAccess; 
         }
 
         public void OnGet()
         {
-            var list = new RazorPageExample.DataAccess.ModelBuilder.PositionsModelBuilder(_dataAccess);
-            list.GetAllPositionsModelBuilder();
+            var myObject = new PositionsModelBuilder(_sqlDataAccess);
+            myObject.GetAllPositionsModelBuilder();
         }
     }
 }

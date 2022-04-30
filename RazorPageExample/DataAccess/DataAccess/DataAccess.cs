@@ -10,28 +10,38 @@ using System.Data.SqlClient;
 
 namespace RazorPageExample.DataAccess.DataAccess
 {
-    public class DataAccess : IDataAccess
+    public class SqlDataAccess : ISqlDataAccess
     {
 
         public string connectionString = ConfigurationManager.AppSettings["ConnectionStrings:EmployeeConnectionString"];
-            
+
         public DataTable GetDataTableWithoutParameters(string sqlQuery)
         {
-            DataTable dt = new DataTable();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
 
-                string sql = sqlQuery;
-                SqlCommand command = new SqlCommand(sql, connection);
 
-                SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
-                dataAdapter.Fill(dt);
+                DataTable dt = new DataTable();
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
 
-                connection.Close();
+                    string sql = sqlQuery;
+                    SqlCommand command = new SqlCommand(sql, connection);
+
+                    SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
+                    dataAdapter.Fill(dt);
+
+                    connection.Close();
+                }
+
+                return dt;
             }
-
-            return dt;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                throw;
+            }
         }
     }
 }

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace RazorPageExample.DataAccess.DataAccess
 {
-    public interface IDataAccess
+    public interface ISqlDataAccess
     {
-   
         public DataTable GetDataTableWithoutParameters(string sqlQuery);
     }
 }
