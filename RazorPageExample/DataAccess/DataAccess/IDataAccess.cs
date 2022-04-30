@@ -10,5 +10,6 @@ namespace RazorPageExample.DataAccess.DataAccess
     {
         public Task<Tuple<DataTable,int>> GetDataTableWithoutParametersAsync(string sqlQuery);
         public Task<Tuple<DataTable, int>> GetDataTableWithParametersAsync(string sqlQuery, List<(string parameterName,object value)> parameters);
+        public Task<int> UpsertSqlDatabaseAsync(string sqlQuery, List<(string parameterName,object value)> parameters);
     }
 }

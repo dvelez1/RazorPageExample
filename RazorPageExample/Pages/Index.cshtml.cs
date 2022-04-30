@@ -26,8 +26,16 @@ namespace RazorPageExample.Pages
             var myObject = new PositionsModelBuilder(_sqlDataAccess);
             //Simple Get
             var (myViewModel, sqlTransactionResult) = myObject.GetAllPositionsModelBuilderAsync().GetAwaiter().GetResult();
+
             // Get with parameter
             var (myViewModel2, sqlTransactionResult2) = myObject.GetPositionsModelBuilderAsync(1).GetAwaiter().GetResult();
+            
+            // Insert
+            //var sqlTransactionResult3 = myObject.InsertPositionsModelBuilderAsync("Human Resrouce Specialist").GetAwaiter().GetResult();
+           
+            // Update
+            var sqlTransactionResult4 = myObject.UpdatePositionsModelBuilderAsync(1,"Human Resrouce Specialist-").GetAwaiter().GetResult();
+
         }
     }
 }

@@ -47,5 +47,32 @@ namespace RazorPageExample.DataAccess.ModelBuilder
 
             return new Tuple<List<Model.Positions>, int>(dataModelList, sqlTransactionResult);
         }
+
+        public async Task<int> InsertPositionsModelBuilderAsync(string PositionDescription)
+        {
+            List<(string ParameterName, object Value)> parameters = new()
+            {
+                ("@PositionDescription", PositionDescription)
+            };
+
+            var sqlTransactionResult = await _sqlDataAccess.UpsertSqlDatabaseAsync("Insert into [dbo].[Positions] (PositionDescription) Values (@PositionDescription);" , parameters);
+
+            return sqlTransactionResult;
+        }
+
+        public async Task<int> UpdatePositionsModelBuilderAsync(int id, string PositionDescription)
+        {
+            List<(string ParameterName, object Value)> parameters = new()
+            {
+                ("@PositionId", id),
+                ("@PositionDescription", PositionDescription)
+            };
+
+            var sqlTransactionResult = await _sqlDataAccess.
+                UpsertSqlDatabaseAsync("Update  [dbo].[Positions]  set PositionDescription = @PositionDescription " +
+                "where PositionId =  @PositionId;", parameters);
+
+            return sqlTransactionResult;
+        }
     }
 }
