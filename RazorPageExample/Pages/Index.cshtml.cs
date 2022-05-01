@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RazorPageExample.DataAccess.ModelBuilder;
+using RazorPageExample.BussinesLogic;
+using RazorPageExample.BussinesLogic.ViewModel;
 using RazorPageExample.DataAccess.DataAccess;
 
 namespace RazorPageExample.Pages
@@ -18,24 +19,28 @@ namespace RazorPageExample.Pages
         public IndexModel(ILogger<IndexModel> logger, ISqlDataAccess sqlDataAccess)
         {
             _logger = logger;
-            _sqlDataAccess = sqlDataAccess; 
+            _sqlDataAccess = sqlDataAccess;
         }
+
+        [BindProperty]
+        public List<PositionsViewModel> positions { get; set; }
 
         public void OnGet()
         {
-            var myObject = new PositionsModelBuilder(_sqlDataAccess);
-            //Simple Get
-            var (myViewModel, sqlTransactionResult) = myObject.GetAllPositionsModelBuilderAsync().GetAwaiter().GetResult();
+            try
+            {
+                var (_positions, errorIndicatorId) = new BussinesLogic.Layer.PositionsLogicLayer(_sqlDataAccess).GetAllPositionsModelBuilderAsync().GetAwaiter().GetResult();
 
-            // Get with parameter
-            var (myViewModel2, sqlTransactionResult2) = myObject.GetPositionsModelBuilderAsync(1).GetAwaiter().GetResult();
+                this.positions = _positions;
+                if (errorIndicatorId < 0) { RedirectToPage("Errors/Error404"); }
             
-            // Insert
-            //var sqlTransactionResult3 = myObject.InsertPositionsModelBuilderAsync("Human Resrouce Specialist").GetAwaiter().GetResult();
-           
-            // Update
-            var sqlTransactionResult4 = myObject.UpdatePositionsModelBuilderAsync(1,"Human Resrouce Specialist-").GetAwaiter().GetResult();
-
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                
+            }
+            
         }
     }
 }
